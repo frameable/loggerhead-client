@@ -15,7 +15,7 @@ class Loggerhead {
     this.beforeLog = options.beforeLog || this.beforeLog || new Function;
     this.afterLog = options.afterLog || this.afterLog || new Function;
 
-    this.metadata ||= {};
+    this.metadata = this.metadata || {};
 
     const META_FIELDS = ['applicationName', 'applicationVersion', 'email', 'displayName', 'userId', 'tenantId', 'userAgentShort'];
 
