@@ -57,7 +57,7 @@ class Loggerhead {
     if (typeof context != 'string') throw "context must be a string";
     if (typeof details != 'object') throw "details must be an object";
     if (!this.endpoint) throw "we need a configured log endpoint";
-    if (this._sequenceNumber++ > 10_000) throw "too many logs";
+    if (this._sequenceNumber++ > 10000) throw "too many logs";
 
     const payload = {
       event,
