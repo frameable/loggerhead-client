@@ -8,21 +8,25 @@ class Loggerhead {
   }
 
   configure(options = {}) {
-    this.logLevel = options.logLevel || 'info' || this.logLevel;
-    this.endpoint = options.endpoint || this.endpoint;
-    this.beforeLog = options.beforeLog || new Function || this.beforeLog;
-    this.afterLog = options.afterLog || new Function || this.afterLog;
-    this.metadata = {
-      applicationName: options.applicationName,
-      applicationVersion: options.applicationVersion,
-      email: options.email,
-      userId: options.userId,
-      tenantId: options.tenantId,
-      userAgent: navigator.userAgent,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      platform: navigator.platform,
-      vendor: navigator.vendor,
+
+    if ('logLevel' in options) this.logLevel = options.logLevel || 'info';
+    if ('endpoint' in options) this.endpoint = options.endpoint;
+
+    this.beforeLog = options.beforeLog || this.beforeLog || new Function;
+    this.afterLog = options.afterLog || this.afterLog || new Function;
+
+    this.metadata ||= {};
+
+    const META_FIELDS = ['applicationName', 'applicationVersion', 'email', 'displayName', 'userId', 'tenantId', 'userAgentShort'];
+
+    for (const f of META_FIELDS) {
+      if (f in options) this.metadata[f] = options[f];
     }
+
+    this.metadata.timezone = options.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.metadata.platform = options.platform || this.metadata.platform || navigator.platform;
+    this.metadata.vendor = options.vendor || this.metadata.vendor || navigator.vendor;
+    this.metadata.userAgent = options.userAgent || this.metadata.userAgent || navigator.userAgent;
   }
 
   trackClicks() {
@@ -69,7 +73,7 @@ class Loggerhead {
 
     this.beforeLog(payload);
     const data = this.encodePayload(payload);
-    this.fetch(`${this.logEndpoint}?d=${data}`);
+    this.fetch(`${this.endpoint}?d=${data}`);
     this.afterLog(payload)
   }
 
