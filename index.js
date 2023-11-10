@@ -59,17 +59,16 @@ class Loggerhead {
     if (!this.endpoint) throw "we need a configured log endpoint";
     if (this._sequenceNumber++ > 10000) throw "too many logs";
 
-    const payload = {
+    const payload = Object.assign({}, this.metadata, {
       event,
       context,
       details,
       url: window.location.href,
       timestamp: Date.now(),
-      ...this.metadata,
       level: logLevel,
       instanceId: this._instanceId,
       sequenceNumber: this._sequenceNumber,
-    };
+    });
 
     this.beforeLog(payload);
     const data = this.encodePayload(payload);
