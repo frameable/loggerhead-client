@@ -3,6 +3,8 @@ class Loggerhead {
   constructor(options = {}) {
     this.configure(options);
     this.error = this.error.bind(this);
+    this._sequenceNumber = 0;
+    this._instanceId = Math.random().toString(36).slice(2);
   }
 
   configure(options = {}) {
@@ -49,7 +51,8 @@ class Loggerhead {
     if (event == '') throw "event must not be empty";
     if (typeof context != 'string') throw "context must be a string";
     if (typeof details != 'object') throw "details must be an object";
-    if (!this.logEndpoint) throw "we need a configured log endpoint";
+    if (!this.endpoint) throw "we need a configured log endpoint";
+    if (this._sequenceNumber++ > 10_000) throw "too many logs";
 
     const payload = {
       event,
@@ -59,6 +62,8 @@ class Loggerhead {
       timestamp: Date.now(),
       ...this.metadata,
       level: logLevel,
+      instanceId: this._instanceId,
+      sequenceNumber: this._sequenceNumber,
     };
 
     this.beforeLog(payload);
@@ -149,7 +154,9 @@ const FIELDS = [
   'timezone',
   'userId',
   'userAgentShort',
-  'level'
+  'level',
+  'instanceId',
+  'sequenceNumber',
 ];
 
 const loggerhead = new Loggerhead();
