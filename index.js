@@ -19,6 +19,7 @@ class Loggerhead {
       userId: options.userId,
       tenantId: options.tenantId,
       userAgent: navigator.userAgent,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       platform: navigator.platform,
       vendor: navigator.vendor,
     }

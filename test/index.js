@@ -35,8 +35,8 @@ test('test payload', (t) => {
   loggerhead.fetch = (url) => {
     const payload = url.split('=')[1]
     assert.equal(
-      payload.slice(19, 253),
-      '%22test%22%2C%22%22%2C%22ubuntu%22%2C%22linux%22%2C%22node%22%2C%22http%3A//altavista.com%22%2C%22release-100%22%2C%22buckminster@fuller.com%22%2C%22tenable%22%2C%22test-application%22%2Cnull%2Cnull%2C%22my-user-id%22%2Cnull%2C%22info',
+      payload.slice(19, 258),
+      '%22test%22%2C%22%22%2C%22ubuntu%22%2C%22linux%22%2C%22node%22%2C%22http%3A//altavista.com%22%2C%22release-100%22%2C%22buckminster@fuller.com%22%2C%22tenable%22%2C%22test-application%22%2Cnull%2C%22UTC%22%2C%22my-user-id%22%2Cnull%2C%22info',
       'encoded payload'
     );
   };
@@ -66,7 +66,7 @@ test('roundtrip payload', (t) => {
       tenantId: 'tenable',
       applicationName: 'test-application',
       displayName: null,
-      timezone: null,
+      timezone: 'UTC',
       userId: 'my-user-id',
       userAgentShort: null,
       level: 'info',
