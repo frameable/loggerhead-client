@@ -2,7 +2,7 @@
 
 Client-side error and event tracking
 
-```
+```javascript
 import { loggerhead } from 'loggerhead-client'
 
 loggerhead.configure({
