@@ -1,3 +1,5 @@
+const SCHEMA_VERSION = 2;
+
 class Loggerhead {
 
   constructor(options = {}) {
@@ -49,25 +51,29 @@ class Loggerhead {
     this._exceptionHandlersInitialized = true;
   }
 
-  log(event, context, details={}, logLevel) {
+  log(eventName, context, details={}, logLevel) {
 
     if (LOG_LEVELS[this.logLevel] > LOG_LEVELS[logLevel]) return
-    if (typeof event != 'string') throw "event must be a string";
-    if (event == '') throw "event must not be empty";
+    if (typeof eventName != 'string') throw "eventName must be a string";
+    if (eventName == '') throw "eventName must not be empty";
     if (typeof context != 'string') throw "context must be a string";
     if (typeof details != 'object') throw "details must be an object";
     if (!this.endpoint) throw "we need a configured log endpoint";
     if (this._sequenceNumber++ > 10000) throw "too many logs";
 
+    const detailsJSON = JSON.stringify(details);
+
     const payload = Object.assign({}, this.metadata, {
-      event,
+      schemaVersion: `%%version_${SCHEMA_VERSION}%%`,
+      eventName,
       context,
-      details,
+      details: detailsJSON,
       url: window.location.href,
       timestamp: Date.now(),
-      level: logLevel,
+      logLevel,
       instanceId: this._instanceId,
       sequenceNumber: this._sequenceNumber,
+      uniqueId: this.uid(),
     });
 
     this.beforeLog(payload);
@@ -81,24 +87,24 @@ class Loggerhead {
     i.src = url;
   }
 
-  trace(event, context='', details={}) {
-    this.log(event, context, details, 'trace');
+  trace(eventName, context='', details={}) {
+    this.log(eventName, context, details, 'trace');
   }
 
-  debug(event, context='', details={}) {
-    this.log(event, context, details, 'debug');
+  debug(eventName, context='', details={}) {
+    this.log(eventName, context, details, 'debug');
   }
 
-  info(event, context='', details={}) {
-    this.log(event, context, details, 'info');
+  info(eventName, context='', details={}) {
+    this.log(eventName, context, details, 'info');
   }
 
-  warn(event, context='', details={}) {
-    this.log(event, context, details, 'warn');
+  warn(eventName, context='', details={}) {
+    this.log(eventName, context, details, 'warn');
   }
 
-  error(event, context='', details={}) {
-    this.log(event, context, details, 'error');
+  error(eventName, context='', details={}) {
+    this.log(eventName, context, details, 'error');
   }
 
   logError(errorEvent) {
@@ -119,7 +125,7 @@ class Loggerhead {
     if (!errorMessage) errorMessage = "null";
     if (!stack) stack = "null";
 
-    this.error(errorMessage.trim(), stack.trim());
+    this.error('error', errorMessage.trim(), { stack: stack.trim() });
     console.error(error);
   }
 
@@ -131,6 +137,10 @@ class Loggerhead {
   decodePayload(payload) {
     const values = JSON.parse(unescape(payload))
     return FIELDS.reduce((a, i) => (a[i] = values.shift(), a), {})
+  }
+
+  uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
   }
 }
 
@@ -144,7 +154,7 @@ const LOG_LEVELS = {
 
 const FIELDS = [
   'timestamp',
-  'event',
+  'eventName',
   'context',
   'vendor',
   'platform',
@@ -158,9 +168,12 @@ const FIELDS = [
   'timezone',
   'userId',
   'userAgentShort',
-  'level',
+  'logLevel',
   'instanceId',
   'sequenceNumber',
+  'uniqueId',
+  'details',
+  'schemaVersion',
 ];
 
 const loggerhead = new Loggerhead();
