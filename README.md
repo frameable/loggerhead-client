@@ -43,9 +43,9 @@ Install event handlers to `window.onerror` and `window.onunhandledrejection` in 
 
 Install a `click` event handler that will ship click events.  If the target element of the event or any of its paretn elements has a `data-track` attribute, then that will be populated as the `context` parameter of the log message.
 
-#### log.info(event[, context, details])
+#### log.info(eventName [, context, details])
 
-Log a message that something expected happened.  The `event` parameter is a string that describes or identifies the action that took place.  The optional `context` parameter is also a string describing the surroundings of the event.  The optional `details` parameter is an object to be stored as JSON with any extra metadata.
+Log a message that something expected happened.  The `eventName` parameter is a string that describes or identifies the action that took place.  The optional `context` parameter is also a string describing the surroundings of the event.  The optional `details` parameter is an object to be stored as JSON with any extra metadata.
 
 #### log.trace(event[, context, details])
 
