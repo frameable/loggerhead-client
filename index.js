@@ -5,6 +5,7 @@ class Loggerhead {
   constructor(options = {}) {
     this.configure(options);
     this.error = this.error.bind(this);
+    this.logError = this.logError.bind(this);
     this._sequenceNumber = 0;
     this._instanceId = Math.random().toString(36).slice(2);
   }
