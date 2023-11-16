@@ -109,7 +109,7 @@ class Loggerhead {
 
   logError(errorEvent) {
 
-    const error = errorEvent.error || errorEvent.message || errorEvent.reason;
+    const error = errorEvent.error || errorEvent.message || errorEvent.reason || errorEvent;
     if (!error) return;
 
     try {
