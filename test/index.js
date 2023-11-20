@@ -80,6 +80,24 @@ test('roundtrip payload', (t) => {
 
 });
 
+test('custom details', (t) => {
+
+  loggerhead.fetch = (url) => {
+    const payload = url.split('=')[1]
+    const data = loggerhead.decodePayload(payload);
+
+    assert.deepEqual(
+      data.details,
+      JSON.stringify({ extra: 1, fortran: 2 }),
+      'configured details layered in'
+    );
+  };
+
+  loggerhead.configure({ details: { extra: 1 } });
+  loggerhead.info('test', 'context', { fortran: 2 });
+
+});
+
 test('before log', (t) => {
 
   loggerhead.configure({ beforeLog: x => assert.equal(typeof x, 'object') });

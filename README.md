@@ -31,6 +31,7 @@ Configure the loggerhead singleton client instance.  Options include...
 - `email` - email address of the logged in user
 - `userId` - user identifier for the logged in user
 - `tenantId` - identifier for the tenant or organization to which the logged in user belongs
+- `details` - default object which will be layered upon for each log message
 - `userAgent` - user agent string; defaults to `navigator.userAgent`
 - `vendor` - user agent vendor; defaults to `navigator.vendor`
 - `platform` - operating system identifier; defaults to `navigator.platform`

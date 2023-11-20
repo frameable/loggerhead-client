@@ -63,7 +63,7 @@ class Loggerhead {
     if (!this.endpoint) throw "we need a configured log endpoint";
     if (this._sequenceNumber++ > 10000) throw "too many logs";
 
-    const detailsJSON = JSON.stringify(Object.assign({},this.metadata.details,details));
+    const detailsJSON = JSON.stringify(Object.assign({}, this.metadata.details, details));
 
     const payload = Object.assign({}, this.metadata, {
       schemaVersion: `%%version_${SCHEMA_VERSION}%%`,
