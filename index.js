@@ -30,6 +30,7 @@ class Loggerhead {
     this.metadata.platform = options.platform || this.metadata.platform || navigator.platform;
     this.metadata.vendor = options.vendor || this.metadata.vendor || navigator.vendor;
     this.metadata.userAgent = options.userAgent || this.metadata.userAgent || navigator.userAgent;
+    this.metadata.details = (typeof options.details == 'object') ? options.details : {};
   }
 
   trackClicks() {
@@ -62,7 +63,7 @@ class Loggerhead {
     if (!this.endpoint) throw "we need a configured log endpoint";
     if (this._sequenceNumber++ > 10000) throw "too many logs";
 
-    const detailsJSON = JSON.stringify(details);
+    const detailsJSON = JSON.stringify(Object.assign({},this.metadata.details,details));
 
     const payload = Object.assign({}, this.metadata, {
       schemaVersion: `%%version_${SCHEMA_VERSION}%%`,
