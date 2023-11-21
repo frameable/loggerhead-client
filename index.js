@@ -129,11 +129,11 @@ class Loggerhead {
 
   encodePayload(data) {
     const d = FIELDS.map(f => data[f]);
-    return escape(JSON.stringify(d));
+    return encodeURIComponent(JSON.stringify(d));
   }
 
   decodePayload(payload) {
-    const values = JSON.parse(unescape(payload))
+    const values = JSON.parse(decodeURIComponent(payload))
     return FIELDS.reduce((a, i) => (a[i] = values.shift(), a), {})
   }
 
