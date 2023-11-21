@@ -56,10 +56,6 @@ class Loggerhead {
   log(eventName, context, details={}, logLevel) {
 
     if (LOG_LEVELS[this.logLevel] > LOG_LEVELS[logLevel]) return
-    if (typeof eventName != 'string') throw "eventName must be a string";
-    if (eventName == '') throw "eventName must not be empty";
-    if (typeof context != 'string') throw "context must be a string";
-    if (typeof details != 'object') throw "details must be an object";
     if (!this.endpoint) throw "we need a configured log endpoint";
     if (this._sequenceNumber++ > 10000) throw "too many logs";
 
