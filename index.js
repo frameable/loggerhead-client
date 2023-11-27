@@ -113,6 +113,9 @@ class Loggerhead {
     try {
       var errorMessage = error.toString();
 
+      if (errorMessage == '[object Event]') {
+        errorMessage = error.message
+      }
       var stack = error.stack && error.stack
         .replace(/@https:\/\/[^\/]+\//g, '@')
         .split('\n').slice(0, 12).join('\n');
