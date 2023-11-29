@@ -123,8 +123,13 @@ class Loggerhead {
     if (!errorMessage) errorMessage = "null";
     if (!stack) stack = "null";
 
+    if (errorMessage.trim() == '[object Event]') {
+      // skip if we don't have useful information to log
+      return;
+    }
+
     this.error('error', errorMessage.trim(), { stack: stack.trim() });
-    console.error(error);
+    console.error(errorEvent);
   }
 
   encodePayload(data) {
