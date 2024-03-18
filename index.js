@@ -38,7 +38,11 @@ class Loggerhead {
       let el = e.target;
 
       const trackableEl = el.closest('[data-track]');
-      const identifier = trackableEl ? trackableEl.getAttribute('data-track') : `${el.tagName.toLowerCase()}.${el.className}`;
+      if (trackableEl) {
+        var identifier = trackableEl.getAttribute('data-track');
+      } else {
+        var identifier = el.tagName + '-' + (el.textContent.replace(/[^\w]+/g, '-').slice(0,36) || el.getAttribute('alt') || el.getAttribute('title'))
+      }
       this.info('click', identifier);
     }, true);
   }
