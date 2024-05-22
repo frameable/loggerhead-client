@@ -64,9 +64,17 @@ Log a message that something happened that should probably not have happened
 
 Log a message that something happened that should definitely not have happened
 
+#### log.beforeLog(fn) 
+
+Hook to inspect or augment/modify the payload before it gets sent
+
+```javascript
+log.beforeLog(payload => payload.details.specialId = specialId)
+```
+
 ## License
 
-Copyright © 2023 Frameable, Inc
+Copyright © 2023-2024 Frameable, Inc
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
